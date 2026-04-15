@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Content Pipeline Agent — Hans Stewart</title>
+<meta name="description" content="Advanced AI-powered content pipeline. Upload documents, define your business, and generate a full multi-format content package instantly."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  /* Warm, cinematic palette aligned with portfolio */
+  --bg: #0e0c0a;
+  --s1: #141210;
+  --s2: #1a1816;
+  --s3: #1e1b18;
+  --b1: rgba(200,180,160,0.05);
+  --b2: rgba(200,180,160,0.10);
+  --b3: rgba(200,180,160,0.18);
+  --copper: #b87a56;
+  --copper-dim: rgba(184,122,86,0.10);
+  --copper-border: rgba(184,122,86,0.32);
+  --copper-glow: rgba(184,122,86,0.22);
+  --orange: #da7c3a;
+  --red: #ff5c5c;
+  --green: #00d68f;
+  --text: #e8e2d9;
+  --muted: #8a8278;
+  --mono: "JetBrains Mono", monospace;
+  --sans: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --radius: 0.75rem;
+  --radius-sm: 0.5rem;
+  --radius-lg: 1rem;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{
+  background:radial-gradient(circle at top,rgba(232,226,217,0.10),transparent 55%) var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  min-height:100dvh;
+  overflow-x:hidden;
+  position:relative;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:radial-gradient(rgba(232,226,217,0.35) 0.4px,transparent 0.4px);
+  background-size:8px 8px;
+  pointer-events:none;
+  mix-blend-mode:soft-light;
+  opacity:0.08;
+  z-index:0;
+}
+
+@keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dot-pulse{0%,100%{opacity:0.4;transform:scale(0.9)}50%{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+.container{max-width:980px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:1}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  background:rgba(14,12,10,0.95);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--b1);
+  padding:0.85rem 0;
+}
+.nav-inner{
+  max-width:980px;
+  margin:0 auto;
+  padding:0 1.5rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+  text-decoration:none;
+}
+.nav-logo-text{
+  font-family:var(--mono);
+  font-size:0.875rem;
+  font-weight:600;
+  color:var(--text);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.nav-logo-text .slash{color:var(--copper)}
+.nav-link{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--muted);
+  text-decoration:none;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  transition:color 0.25s;
+}
+.nav-link:hover{color:var(--copper)}
+
+/* HERO */
+.hero{padding:7.5rem 0 3rem;text-align:center}
+.hero-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  font-family:var(--mono);
+  font-size:0.72rem;
+  font-weight:500;
+  color:var(--copper);
+  background:var(--copper-dim);
+  border:1px solid var(--copper-border);
+  padding:0.32rem 0.95rem;
+  border-radius:999px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  margin-bottom:1.5rem;
+  animation:fade-up 0.6s ease both;
+}
+.hero-tag::before{
+  content:"";
+  width:6px;height:6px;
+  background:var(--copper);
+  border-radius:50%;
+  box-shadow:0 0 10px var(--copper-glow);
+  animation:dot-pulse 2s ease infinite;
+}
+.hero h1{
+  font-family:var(--mono);
+  font-size:clamp(2.1rem,5vw,3.3rem);
+  font-weight:700;
+  color:var(--text);
+  line-height:1.08;
+  margin-bottom:1.2rem;
+  letter-spacing:-0.04em;
+  animation:fade-up 0.6s ease 0.1s both;
+}
+.hero h1 .accent{color:var(--copper)}
+.hero-sub{
+  font-size:1rem;
+  color:var(--muted);
+  max-width:58ch;
+  margin:0 auto 2.4rem;
+  animation:fade-up 0.6s ease 0.2s both;
+}
+
+/* FORM CARD */
+.form-card{
+  background:linear-gradient(180deg,rgba(20,18,16,0.98),rgba(14,12,10,0.98));
+  border-radius:var(--radius-lg);
+  border:1px solid var(--b1);
+  box-shadow:0 32px 80px rgba(0,0,0,0.5);
+  padding:2rem;
+  margin-bottom:1.25rem;
+  animation:fade-up 0.6s ease 0.3s both;
+}
+.form-section{margin-bottom:1.75rem}
+.form-section:last-child{margin-bottom:0}
+.section-label{
+  display:flex;
+  align-items:center;
+  gap:0.6rem;
+  font-family:var(--mono);
+  font-size:0.68rem;
+  font-weight:600;
+  color:var(--copper);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  margin-bottom:1rem;
+  padding-bottom:0.6rem;
+  border-bottom:1px solid var(--b1);
+}
+.section-label .lnum{color:var(--muted)}
+.input-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0.75rem;
+  margin-bottom:0.75rem;
+}
+.input-full{grid-column:1/-1}
+.input-wrap{display:flex;flex-direction:column;gap:0.4rem}
+.field-label{
+  font-family:var(--mono);
+  font-size:0.65rem;
+  color:var(--muted);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+}
+.text-input,.select-input,.textarea-input{
+  width:100%;
+  background:var(--s2);
+  border:1px solid var(--b2);
+  border-radius:var(--radius-sm);
+  padding:0.875rem 1.125rem;
+  font-family:var(--mono);
+  font-size:0.875rem;
+  color:var(--text);
+  outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s,background 0.2s;
+}
+.text-input::placeholder,.textarea-input::placeholder{color:var(--muted)}
+.text-input:focus,.select-input:focus,.textarea-input:focus{
+  border-color:var(--copper-border);
+  box-shadow:0 0 0 3px var(--copper-glow);
+  background:var(--s3);
+}
+.select-input{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A8278' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 1rem center;
+  cursor:pointer;
+}
+.select-input option{background:var(--s2);color:var(--text)}
+.textarea-input{resize:vertical;min-height:90px;line-height:1.6}
+
+/* Upload zone */
+.upload-zone{
+  border:1px dashed var(--b2);
+  border-radius:var(--radius);
+  padding:1.25rem 1.5rem;
+  cursor:pointer;
+  transition:border-color 0.2s,background 0.2s;
+  text-align:center;
+  position:relative;
+  background:rgba(20,18,16,0.85);
+}
+.upload-zone:hover,.upload-zone.drag-over{
+  border-color:var(--copper-border);
+  background:var(--copper-dim);
+}
+.upload-zone input[type="file"]{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+  width:100%;
+  height:100%;
+}
+.upload-icon{font-size:1.4rem;margin-bottom:0.4rem;line-height:1}
+.upload-text{
+  font-family:var(--mono);
+  font-size:0.78rem;
+  color:var(--muted);
+  line-height:1.5;
+}
+.upload-text strong{color:var(--copper);font-weight:600}
+.upload-hint{
+  font-size:0.68rem;
+  color:var(--muted);
+  margin-top:0.3rem;
+  font-family:var(--mono);
+}
+.file-preview{
+  display:none;
+  align-items:center;
+  gap:0.75rem;
+  background:var(--s2);
+  border:1px solid var(--copper-border);
+  border-radius:var(--radius-sm);
+  padding:0.6rem 1rem;
+  margin-top:0.6rem;
+}
+.file-preview.visible{display:flex}
+.file-preview-name{
+  font-family:var(--mono);
+  font-size:0.8rem;
+  color:var(--copper);
+  flex:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.file-remove{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  color:var(--muted);
+  cursor:pointer;
+  background:none;
+  border:none;
+  transition:color 0.2s;
+  flex-shrink:0;
+}
+.file-remove:hover{color:var(--red)}
+
+/* Output selection */
+.output-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0.6rem;
+}
+.output-group-label{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  color:var(--muted);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  grid-column:1/-1;
+  margin-top:0.5rem;
+  padding-bottom:0.3rem;
+  border-bottom:1px solid var(--b1);
+}
+.output-group-label:first-of-type{margin-top:0}
+.output-check{position:relative}
+.output-check input[type="checkbox"]{position:absolute;opacity:0;width:0;height:0}
+.output-check label{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0.35rem;
+  background:var(--s2);
+  border:1px solid var(--b2);
+  border-radius:var(--radius-sm);
+  padding:0.75rem 0.5rem;
+  cursor:pointer;
+  transition:border-color 0.2s,background 0.2s,transform 0.15s;
+  text-align:center;
+  user-select:none;
+}
+.output-check label:hover{
+  border-color:var(--b3);
+  transform:translateY(-1px);
+}
+.output-check input:checked + label{
+  border-color:var(--copper-border);
+  background:var(--copper-dim);
+}
+.check-icon{font-size:1.1rem;line-height:1}
+.check-name{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  color:var(--muted);
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  line-height:1.3;
+}
+.output-check input:checked + label .check-name{color:var(--copper)}
+.select-all-row{
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+  margin-bottom:0.75rem;
+}
+.btn-select-all{
+  font-family:var(--mono);
+  font-size:0.68rem;
+  color:var(--muted);
+  background:var(--s2);
+  border:1px solid var(--b2);
+  padding:0.3rem 0.8rem;
+  border-radius:999px;
+  cursor:pointer;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  transition:color 0.2s,border-color 0.2s,background 0.2s;
+}
+.btn-select-all:hover{
+  color:var(--copper);
+  border-color:var(--copper-border);
+  background:var(--copper-dim);
+}
+.selected-count{
+  font-family:var(--mono);
+  font-size:0.68rem;
+  color:var(--muted);
+}
+.selected-count span{color:var(--copper);font-weight:600}
+
+/* Primary CTA */
+.btn-generate{
+  width:100%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.5rem;
+  background:var(--copper);
+  color:#0e0c0a;
+  font-family:var(--mono);
+  font-size:0.85rem;
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding:1rem 1.5rem;
+  border-radius:var(--radius-sm);
+  border:1px solid var(--copper-border);
+  cursor:pointer;
+  transition:opacity 0.2s,transform 0.15s,box-shadow 0.15s;
+  margin-top:0.5rem;
+}
+.btn-generate:hover{
+  opacity:0.95;
+  transform:translateY(-1px);
+  box-shadow:0 18px 40px rgba(0,0,0,0.5);
+}
+.btn-generate:active{transform:translateY(0);box-shadow:none}
+.btn-generate:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none}
+.input-hint{
+  margin-top:0.65rem;
+  font-size:0.72rem;
+  color:var(--muted);
+  font-family:var(--mono);
+  text-align:center;
+}
+
+/* ERROR */
+.error-state{
+  display:none;
+  background:rgba(255,92,92,0.06);
+  border:1px solid rgba(255,92,92,0.22);
+  border-radius:var(--radius);
+  padding:1.125rem 1.5rem;
+  margin-top:1rem;
+  animation:fade-up 0.3s ease;
+}
+.error-state.active{display:flex;align-items:flex-start;gap:0.75rem}
+.error-icon{
+  color:var(--red);
+  font-size:1.1rem;
+  flex-shrink:0;
+  padding-top:1px;
+}
+.error-text{
+  font-family:var(--mono);
+  font-size:0.85rem;
+  color:#ffd7cf;
+}
+.error-detail{
+  font-size:0.78rem;
+  color:var(--muted);
+  margin-top:0.2rem;
+  font-family:var(--mono);
+}
+
+/* LOADING */
+.loading-state{
+  display:none;
+  padding:3rem 0;
+  text-align:center;
+  animation:fade-up 0.4s ease;
+}
+.loading-state.active{display:block}
+.scanner-box{
+  position:relative;
+  width:220px;
+  height:120px;
+  margin:0 auto 1.5rem;
+  border-radius:24px;
+  border:1px solid var(--copper-border);
+  background:radial-gradient(circle at top,rgba(184,122,86,0.18),rgba(20,18,16,0.98));
+  overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,0.6);
+}
+.scanner-box::before{
+  content:"";
+  position:absolute;
+  inset:20% 10%;
+  border-radius:999px;
+  border:1px solid rgba(232,226,217,0.12);
+}
+.scanner-line{
+  position:absolute;
+  left:8%;
+  right:8%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--copper),transparent);
+  box-shadow:0 0 12px var(--copper-glow);
+  animation:shimmer 2s ease-in-out infinite;
+  top:20%;
+}
+.loading-label{
+  font-family:var(--mono);
+  font-size:0.82rem;
+  color:var(--copper);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+}
+.loading-dots span{
+  display:inline-block;
+  width:5px;height:5px;
+  background:var(--copper);
+  border-radius:50%;
+  margin:0 2px;
+  animation:dot-pulse 1.2s ease infinite;
+}
+.loading-dots span:nth-child(2){animation-delay:0.2s}
+.loading-dots span:nth-child(3){animation-delay:0.4s}
+.loading-steps{
+  display:flex;
+  flex-direction:column;
+  gap:0.4rem;
+  margin-top:1rem;
+  text-align:left;
+  max-width:340px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.loading-step{
+  font-family:var(--mono);
+  font-size:0.72rem;
+  color:var(--muted);
+  letter-spacing:0.04em;
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  transition:color 0.3s;
+}
+.loading-step.done{color:var(--copper)}
+.loading-step.active-step{color:var(--text)}
+.step-dot{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--b3);
+  flex-shrink:0;
+  transition:background 0.3s;
+}
+.loading-step.done .step-dot{background:var(--copper)}
+.loading-step.active-step .step-dot{
+  background:var(--text);
+  animation:dot-pulse 1s ease infinite;
+}
+
+/* RESULTS */
+.results{display:none;animation:fade-up 0.5s ease;padding-bottom:5rem}
+.results.active{display:block}
+
+/* Top bar */
+.r-topbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:1.25rem;
+  flex-wrap:wrap;
+  gap:0.75rem;
+}
+.r-topbar-left{display:flex;flex-direction:column;gap:0.4rem}
+.r-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  font-family:var(--mono);
+  font-size:0.72rem;
+  font-weight:600;
+  color:var(--copper);
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+}
+.r-badge::before{
+  content:"";
+  width:8px;height:8px;
+  background:var(--copper);
+  border-radius:50%;
+  box-shadow:0 0 8px var(--copper-glow);
+}
+.r-stats{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  flex-wrap:wrap;
+}
+.r-stat{
+  font-family:var(--mono);
+  font-size:0.72rem;
+  color:var(--muted);
+}
+.r-stat span{color:var(--orange)}
+.r-stat-dot{color:var(--b3)}
+.btn-reset{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--muted);
+  background:var(--s1);
+  border:1px solid var(--b2);
+  padding:0.45rem 1rem;
+  border-radius:999px;
+  cursor:pointer;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  transition:color 0.2s,border-color 0.2s,background 0.2s,transform 0.15s;
+}
+.btn-reset:hover{
+  color:var(--text);
+  border-color:var(--b3);
+  background:var(--s2);
+  transform:translateY(-1px);
+}
+
+/* Summary chips */
+.r-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.5rem;
+  margin-bottom:1.25rem;
+}
+.r-chip{
+  background:var(--s1);
+  border:1px solid var(--b1);
+  border-radius:var(--radius-sm);
+  padding:0.4rem 0.875rem;
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+}
+.r-chip-key{
+  font-family:var(--mono);
+  font-size:0.58rem;
+  color:var(--muted);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+}
+.r-chip-val{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--text);
+  font-weight:500;
+}
+.r-chip-sep{color:var(--b3);font-size:0.7rem}
+
+/* Layout */
+.r-layout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:1.25rem;
+  align-items:start;
+}
+
+/* Sidebar */
+.r-sidebar{
+  background:var(--s1);
+  border:1px solid var(--b1);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  position:sticky;
+  top:5.5rem;
+}
+.r-sidebar-head{
+  padding:0.875rem 1rem 0.75rem;
+  border-bottom:1px solid var(--b1);
+}
+.r-sidebar-title{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--muted);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+}
+.r-format-list{padding:0.5rem}
+.r-format-item{
+  display:flex;
+  align-items:center;
+  gap:0.7rem;
+  padding:0.65rem 0.75rem;
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  transition:background 0.15s,border-color 0.15s;
+  border:1px solid transparent;
+  margin-bottom:0.2rem;
+}
+.r-format-item:hover{background:var(--s2)}
+.r-format-item.active{
+  background:var(--copper-dim);
+  border-color:var(--copper-border);
+}
+.r-format-icon{
+  font-size:1rem;
+  width:22px;
+  text-align:center;
+  flex-shrink:0;
+}
+.r-format-info{flex:1;min-width:0}
+.r-format-name{
+  font-family:var(--mono);
+  font-size:0.72rem;
+  color:var(--muted);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  transition:color 0.15s;
+}
+.r-format-item.active .r-format-name{color:var(--copper)}
+.r-format-words{
+  font-family:var(--mono);
+  font-size:0.58rem;
+  color:var(--muted);
+  margin-top:0.1rem;
+}
+.r-format-done{
+  width:16px;height:16px;
+  border-radius:50%;
+  background:var(--copper-dim);
+  border:1px solid var(--copper-border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.r-format-done svg{width:8px;height:8px;stroke:var(--copper)}
+.r-sidebar-foot{
+  padding:0.875rem;
+  border-top:1px solid var(--b1);
+}
+.btn-download-all{
+  width:100%;
+  font-family:var(--mono);
+  font-size:0.68rem;
+  color:var(--text);
+  background:var(--s2);
+  border:1px solid var(--b2);
+  padding:0.5rem;
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.4rem;
+}
+.btn-download-all:hover{
+  border-color:var(--copper-border);
+  color:var(--copper);
+}
+
+/* Content panel */
+.r-panel{
+  background:var(--s1);
+  border:1px solid var(--b1);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  min-height:500px;
+}
+.r-panel-head{
+  padding:1.25rem 1.5rem;
+  border-bottom:1px solid var(--b1);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:0.75rem;
+  background:var(--s2);
+}
+.r-panel-title{
+  display:flex;
+  align-items:center;
+  gap:0.6rem;
+}
+.r-panel-icon{font-size:1.2rem;line-height:1}
+.r-panel-name{
+  font-family:var(--mono);
+  font-size:0.82rem;
+  font-weight:700;
+  color:var(--text);
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.r-panel-type{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  color:var(--muted);
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+  background:rgba(200,180,160,0.06);
+  padding:0.2rem 0.6rem;
+  border-radius:999px;
+  border:1px solid var(--b1);
+}
+.r-panel-actions{
+  display:flex;
+  gap:0.5rem;
+  align-items:center;
+}
+.btn-action{
+  font-family:var(--mono);
+  font-size:0.68rem;
+  color:var(--muted);
+  background:var(--s1);
+  border:1px solid var(--b2);
+  padding:0.35rem 0.85rem;
+  border-radius:999px;
+  cursor:pointer;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  gap:0.35rem;
+}
+.btn-action:hover{color:var(--copper);border-color:var(--copper-border)}
+.btn-action.copied{
+  color:var(--green);
+  border-color:rgba(0,214,143,0.4);
+}
+.btn-action-primary{
+  background:rgba(184,122,86,0.12);
+  border-color:var(--copper-border);
+  color:var(--copper);
+}
+.btn-action-primary:hover{background:rgba(184,122,86,0.18)}
+
+.r-panel-body{padding:1.5rem;overflow-y:auto;max-height:72vh}
+
+/* word count */
+.r-wc-bar{
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+  padding:0.6rem 1.5rem;
+  border-bottom:1px solid var(--b1);
+  background:rgba(232,226,217,0.02);
+}
+.r-wc-label{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--muted);
+  letter-spacing:0.08em;
+}
+.r-wc-num{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--copper);
+}
+
+/* Generic prose */
+.prose{
+  font-size:0.92rem;
+  color:var(--text);
+  line-height:1.9;
+  white-space:pre-wrap;
+  font-family:var(--sans);
+}
+.prose-formatted{
+  font-size:0.92rem;
+  color:var(--text);
+  line-height:1.9;
+  font-family:var(--sans);
+}
+.prose-formatted p{
+  margin-bottom:1rem;
+  max-width:72ch;
+}
+.prose-formatted h2{
+  font-family:var(--mono);
+  font-size:0.9rem;
+  font-weight:700;
+  color:var(--copper);
+  margin:1.75rem 0 0.6rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.prose-formatted h3{
+  font-family:var(--mono);
+  font-size:0.82rem;
+  font-weight:600;
+  color:var(--text);
+  margin:1.25rem 0 0.4rem;
+}
+.prose-formatted .hashtag{
+  color:var(--copper);
+  font-weight:500;
+}
+.prose-formatted .label-tag{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--orange);
+  background:rgba(218,124,58,0.10);
+  border:1px solid rgba(218,124,58,0.35);
+  padding:0.15rem 0.5rem;
+  border-radius:999px;
+  margin-bottom:0.5rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+/* Tweets */
+.tweet-stack{display:flex;flex-direction:column;gap:0.875rem}
+.tweet-card{
+  background:var(--s2);
+  border:1px solid var(--b2);
+  border-radius:var(--radius);
+  padding:1.125rem 1.25rem;
+  transition:border-color 0.2s;
+}
+.tweet-card:hover{border-color:var(--b3)}
+.tweet-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:0.6rem;
+}
+.tweet-num{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  color:var(--copper);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  background:var(--copper-dim);
+  border:1px solid var(--copper-border);
+  padding:0.15rem 0.5rem;
+  border-radius:999px;
+}
+.tweet-chars{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--muted);
+}
+.tweet-chars.over{color:var(--red)}
+.tweet-body{
+  font-size:0.92rem;
+  color:var(--text);
+  line-height:1.75;
+  white-space:pre-wrap;
+}
+.tweet-copy{
+  margin-top:0.75rem;
+  font-family:var(--mono);
+  font-size:0.65rem;
+  color:var(--muted);
+  background:none;
+  border:1px solid var(--b2);
+  padding:0.3rem 0.7rem;
+  border-radius:999px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.tweet-copy:hover{
+  color:var(--copper);
+  border-color:var(--copper-border);
+}
+
+/* Email */
+.email-tabs{
+  display:flex;
+  gap:0.4rem;
+  margin-bottom:1rem;
+}
+.email-tab{
+  font-family:var(--mono);
+  font-size:0.68rem;
+  color:var(--muted);
+  background:var(--s2);
+  border:1px solid var(--b2);
+  padding:0.35rem 0.85rem;
+  border-radius:999px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.email-tab.active{
+  color:var(--copper);
+  border-color:var(--copper-border);
+  background:var(--copper-dim);
+}
+.email-block{display:none}
+.email-block.active{display:block;animation:fade-up 0.25s ease}
+.email-field{
+  background:var(--s2);
+  border:1px solid var(--b2);
+  border-radius:var(--radius);
+  margin-bottom:0.75rem;
+  overflow:hidden;
+}
+.email-field-label{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  color:var(--copper);
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+  padding:0.5rem 1rem 0.4rem;
+  border-bottom:1px solid var(--b1);
+  background:rgba(184,122,86,0.08);
+}
+.email-field-value{
+  font-size:0.9rem;
+  color:var(--text);
+  line-height:1.8;
+  padding:0.875rem 1rem;
+  white-space:pre-wrap;
+}
+
+/* Ads */
+.ad-grid{display:flex;flex-direction:column;gap:0.75rem}
+.ad-field{
+  background:var(--s2);
+  border:1px solid var(--b2);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.ad-field-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0.5rem 1rem;
+  border-bottom:1px solid var(--b1);
+  background:rgba(218,124,58,0.08);
+}
+.ad-field-label{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  color:var(--orange);
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+}
+.ad-field-limit{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  color:var(--muted);
+}
+.ad-field-body{
+  padding:0.875rem 1rem;
+  font-size:0.9rem;
+  color:var(--text);
+  line-height:1.75;
+  white-space:pre-wrap;
+}
+
+/* Images */
+.img-gallery{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1rem;
+}
+.img-card{
+  background:var(--s2);
+  border:1px solid var(--b2);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transition:border-color 0.2s,transform 0.2s;
+}
+.img-card:hover{
+  border-color:var(--copper-border);
+  transform:translateY(-2px);
+}
+.img-card img{
+  width:100%;
+  display:block;
+  aspect-ratio:1;
+  object-fit:cover;
+}
+.img-card-info{padding:0.875rem}
+.img-card-label{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--copper);
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+  margin-bottom:0.35rem;
+}
+.img-card-prompt{
+  font-family:var(--mono);
+  font-size:0.65rem;
+  color:var(--muted);
+  line-height:1.55;
+  margin-bottom:0.6rem;
+}
+.btn-dl-img{
+  width:100%;
+  font-family:var(--mono);
+  font-size:0.65rem;
+  color:var(--muted);
+  background:var(--s1);
+  border:1px solid var(--b2);
+  padding:0.4rem;
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-dl-img:hover{
+  color:var(--copper);
+  border-color:var(--copper-border);
+}
+.img-placeholder{
+  width:100%;
+  aspect-ratio:1;
+  background:var(--s3);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0.5rem;
+}
+.img-placeholder-icon{font-size:2.5rem;opacity:0.2}
+.img-placeholder-text{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--muted);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+/* Print */
+@media print{
+  body{background:#fff;color:#111}
+  nav,footer,.r-sidebar,.r-panel-actions,.r-topbar,.r-chips,.btn-action,#form-card,.loading-state,.error-state{display:none!important}
+  .r-panel{border:none;box-shadow:none;background:#fff}
+  .r-panel-head{background:#f5f5f5;border:none}
+  .r-panel-name{color:#111}
+  .r-panel-body{max-height:none;overflow:visible;padding:1rem}
+  .prose,.prose-formatted,.tweet-body,.email-field-value,.ad-field-body{color:#111}
+  .hashtag{color:#b87a56}
+  .r-wc-bar{display:none}
+}
+
+/* FOOTER */
+footer{
+  margin-top:0;
+  padding:2.5rem 0;
+  border-top:1px solid var(--b1);
+  text-align:center;
+  position:relative;
+  z-index:1;
+}
+.footer-text{
+  font-family:var(--mono);
+  font-size:0.72rem;
+  color:var(--muted);
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.footer-text a{
+  color:var(--copper);
+  text-decoration:none;
+}
+.footer-text a:hover{text-decoration:underline}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  .r-layout{grid-template-columns:1fr}
+  .r-sidebar{position:static}
+  .output-grid{grid-template-columns:repeat(3,1fr)}
+  .input-row{grid-template-columns:1fr}
+  .hero{padding:6rem 0 2.5rem}
+}
+@media(max-width:480px){
+  .output-grid{grid-template-columns:repeat(2,1fr)}
+  .img-gallery{grid-template-columns:1fr}
+  .form-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="https://hansstewart.dev" target="_blank" rel="noopener noreferrer" class="nav-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-label="Hans Stewart">
+        <polygon points="12,2 22,8 22,20 12,22 2,20 2,8" stroke="#b87a56" stroke-width="1.5" fill="rgba(184,122,86,0.14)"/>
+        <polygon points="12,6 18,10 18,18 12,19 6,18 6,10" stroke="#b87a56" stroke-width="1" fill="none" opacity="0.4"/>
+        <circle cx="12" cy="13" r="2.25" fill="#b87a56" opacity="0.9"/>
+      </svg>
+      <span class="nav-logo-text">HS <span class="slash">/</span> pipeline</span>
+    </a>
+    <a href="https://hansstewart.dev" target="_blank" rel="noopener noreferrer" class="nav-link">hansstewart.dev ↗</a>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container">
+
+      <div class="hero-tag">Multi-Agent Content Pipeline</div>
+      <h1>AI Content <span class="accent">Pipeline</span><br/>Agent</h1>
+      <p class="hero-sub">Define your business, upload context documents, choose your output formats — get a complete multi-channel content package in one run.</p>
+
+      <!-- FORM CARD -->
+      <div class="form-card" id="form-card">
+        <div class="form-section">
+          <div class="section-label"><span class="lnum">01 /</span> Business Context</div>
+          <div class="input-row">
+            <div class="input-wrap">
+              <span class="field-label">Business / Brand Name</span>
+              <input type="text" id="business-name" class="text-input" placeholder="e.g. Acme Marketing Co." autocomplete="off"/>
+            </div>
+            <div class="input-wrap">
+              <span class="field-label">Type of Business</span>
+              <select id="business-type" class="select-input">
+                <option value="" disabled selected>Select type</option>
+                <option value="saas">SaaS / Software</option>
+                <option value="agency">Agency / Consulting</option>
+                <option value="ecommerce">E-Commerce / Retail</option>
+                <option value="coaching">Coaching / Education</option>
+                <option value="real-estate">Real Estate</option>
+                <option value="healthcare">Healthcare / Wellness</option>
+                <option value="finance">Finance / Fintech</option>
+                <option value="restaurant">Restaurant / Food</option>
+                <option value="nonprofit">Non-Profit</option>
+                <option value="personal-brand">Personal Brand</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-wrap">
+              <span class="field-label">Target Audience</span>
+              <input type="text" id="audience-input" class="text-input" placeholder="e.g. Small business owners, 30-50" autocomplete="off"/>
+            </div>
+            <div class="input-wrap">
+              <span class="field-label">Tone / Voice</span>
+              <select id="tone-input" class="select-input">
+                <option value="" disabled selected>Select tone</option>
+                <option value="professional">Professional</option>
+                <option value="casual">Casual</option>
+                <option value="authoritative">Authoritative</option>
+                <option value="conversational">Conversational</option>
+                <option value="bold">Bold</option>
+                <option value="empathetic">Empathetic</option>
+                <option value="witty">Witty</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-label"><span class="lnum">02 /</span> Campaign Brief</div>
+          <div class="input-wrap" style="margin-bottom:0.75rem">
+            <span class="field-label">Topic / Campaign Goal</span>
+            <input type="text" id="topic-input" class="text-input" placeholder="e.g. Launch of our new AI automation service" autocomplete="off"/>
+          </div>
+          <div class="input-wrap">
+            <span class="field-label">Key Message or Offer <span style="color:var(--muted);font-size:0.6rem;text-transform:none;letter-spacing:0">(optional)</span></span>
+            <textarea id="key-message" class="textarea-input" placeholder="e.g. 50% off first month, emphasize time savings, include social proof..." rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-label"><span class="lnum">03 /</span> Reference Documents <span style="color:var(--muted);font-size:0.6rem;text-transform:none;letter-spacing:0;margin-left:0.25rem">(optional)</span></div>
+          <div class="upload-zone" id="upload-zone">
+            <input type="file" id="doc-upload" accept=".pdf,.txt,.docx,.doc,.md,.csv" multiple/>
+            <div class="upload-icon">📎</div>
+            <div class="upload-text"><strong>Drop files here</strong> or click to browse</div>
+            <div class="upload-hint">PDF, TXT, DOCX, MD, CSV — Brand docs, tone guides, product specs, past content</div>
+          </div>
+          <div id="file-list"></div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-label"><span class="lnum">04 /</span> Output Formats</div>
+          <div class="select-all-row">
+            <button class="btn-select-all" onclick="selectAll()">Select All</button>
+            <button class="btn-select-all" onclick="clearAll()">Clear All</button>
+            <span class="selected-count"><span id="checked-count">0</span> selected</span>
+          </div>
+          <div class="output-grid">
+            <span class="output-group-label">Social Media</span>
+            <div class="output-check"><input type="checkbox" id="out-instagram" name="outputs" value="instagram"/><label for="out-instagram"><span class="check-icon">📸</span><span class="check-name">Instagram</span></label></div>
+            <div class="output-check"><input type="checkbox" id="out-facebook" name="outputs" value="facebook"/><label for="out-facebook"><span class="check-icon">👥</span><span class="check-name">Facebook</span></label></div>
+            <div class="output-check"><input type="checkbox" id="out-linkedin" name="outputs" value="linkedin"/><label for="out-linkedin"><span class="check-icon">💼</span><span class="check-name">LinkedIn</span></label></div>
+            <div class="output-check"><input type="checkbox" id="out-twitter" name="outputs" value="twitter"/><label for="out-twitter"><span class="check-icon">✖</span><span class="check-name">X (Twitter)</span></label></div>
+            <span class="output-group-label">Paid Advertising</span>
+            <div class="output-check"><input type="checkbox" id="out-google-ad" name="outputs" value="google_ad"/><label for="out-google-ad"><span class="check-icon">🔍</span><span class="check-name">Google Ad</span></label></div>
+            <div class="output-check"><input type="checkbox" id="out-linkedin-ad" name="outputs" value="linkedin_ad"/><label for="out-linkedin-ad"><span class="check-icon">📢</span><span class="check-name">LinkedIn Ad</span></label></div>
+            <div style="grid-column:span 2"></div>
+            <span class="output-group-label">Email</span>
+            <div class="output-check"><input type="checkbox" id="out-single-email" name="outputs" value="single_email"/><label for="out-single-email"><span class="check-icon">✉️</span><span class="check-name">Single Email</span></label></div>
+            <div class="output-check"><input type="checkbox" id="out-email-campaign" name="outputs" value="email_campaign"/><label for="out-email-campaign"><span class="check-icon">📬</span><span class="check-name">Email Campaign</span></label></div>
+            <div style="grid-column:span 2"></div>
+            <span class="output-group-label">Long-Form Content</span>
+            <div class="output-check"><input type="checkbox" id="out-blog" name="outputs" value="blog"/><label for="out-blog"><span class="check-icon">📝</span><span class="check-name">Blog Post</span></label></div>
+            <div class="output-check"><input type="checkbox" id="out-guide-pdf" name="outputs" value="guide_pdf"/><label for="out-guide-pdf"><span class="check-icon">📘</span><span class="check-name">Guide PDF</span></label></div>
+            <div class="output-check"><input type="checkbox" id="out-infographic" name="outputs" value="infographic_pdf"/><label for="out-infographic"><span class="check-icon">📊</span><span class="check-name">Infographic PDF</span></label></div>
+            <div></div>
+            <span class="output-group-label">AI-Generated Images</span>
+            <div class="output-check"><input type="checkbox" id="out-images" name="outputs" value="images"/><label for="out-images"><span class="check-icon">🎨</span><span class="check-name">Images</span></label></div>
+            <div style="grid-column:span 3;font-family:var(--mono);font-size:0.65rem;color:var(--muted);align-self:center;padding-left:0.25rem">Generates platform-optimized visuals via Gemini / DALL-E 3 HD</div>
+          </div>
+        </div>
+
+        <button class="btn-generate" id="generate-btn" onclick="runPipeline()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          Generate Content Package
+        </button>
+        <p class="input-hint">// Multi-agent pipeline · Researcher → Strategist → Copywriter → Editor → Formatter</p>
+      </div>
+
+      <!-- ERROR -->
+      <div class="error-state" id="error-state">
+        <span class="error-icon">⚠</span>
+        <div>
+          <div class="error-text" id="error-msg">Pipeline failed.</div>
+          <div class="error-detail" id="error-detail"></div>
+        </div>
+      </div>
+
+      <!-- LOADING -->
+      <div class="loading-state" id="loading-state">
+        <div class="scanner-box">
+          <div class="scanner-line"></div>
+        </div>
+        <div class="loading-label">Pipeline Running</div>
+        <div class="loading-dots" style="margin-top:0.5rem"><span></span><span></span><span></span></div>
+        <div class="loading-steps" id="loading-steps">
+          <div class="loading-step" id="step-research"><span class="step-dot"></span>Agent 1 · Researcher — analyzing topic &amp; documents</div>
+          <div class="loading-step" id="step-strategy"><span class="step-dot"></span>Agent 2 · Strategist — building content strategy</div>
+          <div class="loading-step" id="step-copy"><span class="step-dot"></span>Agent 3 · Copywriter — drafting all formats</div>
+          <div class="loading-step" id="step-edit"><span class="step-dot"></span>Agent 4 · Editor — refining &amp; polishing</div>
+          <div class="loading-step" id="step-format"><span class="step-dot"></span>Agent 5 · Formatter — packaging output</div>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="results" id="results">
+        <div class="r-topbar">
+          <div class="r-topbar-left">
+            <div class="r-badge">Package Ready</div>
+            <div class="r-stats" id="r-stats"></div>
+          </div>
+          <button class="btn-reset" onclick="resetPipeline()">← New Package</button>
+        </div>
+
+        <div class="r-chips" id="r-chips"></div>
+
+        <div class="r-layout">
+          <!-- Sidebar -->
+          <aside class="r-sidebar">
+            <div class="r-sidebar-head"><div class="r-sidebar-title">Generated Formats</div></div>
+            <div class="r-format-list" id="r-format-list"></div>
+            <div class="r-sidebar-foot">
+              <button class="btn-download-all" onclick="printCurrentPanel()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export as PDF
+              </button>
+            </div>
+          </aside>
+
+          <!-- Panel -->
+          <div class="r-panel" id="r-panel">
+            <div style="display:flex;align-items:center;justify-content:center;height:400px;font-family:var(--mono);font-size:0.8rem;color:var(--muted)">Select a format from the sidebar →</div>
+          </div>
+        </div>
+      </div>
+      <!-- /results -->
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-text">
+    <a href="https://hansstewart.dev" target="_blank" rel="noopener noreferrer">Hans Stewart</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/HansStewart/ai-content-pipeline" target="_blank" rel="noopener noreferrer">GitHub</a>
+    &nbsp;·&nbsp;
+    <a href="https://hansstewart.github.io/ai-architecture/" target="_blank" rel="noopener noreferrer">AI Architecture</a>
+  </div>
+</footer>
+
+<script>
+const API_URL = "https://ai-content-pipeline-559169459241.us-east1.run.app/generate";
+
+const OUTPUT_META = {
+  instagram:       { label:"Instagram Post",   icon:"📸", type:"Social" },
+  facebook:        { label:"Facebook Post",    icon:"👥", type:"Social" },
+  linkedin:        { label:"LinkedIn Post",    icon:"💼", type:"Social" },
+  twitter:         { label:"X (Twitter)",      icon:"✖",  type:"Social" },
+  google_ad:       { label:"Google Ad",        icon:"🔍", type:"Ad" },
+  linkedin_ad:     { label:"LinkedIn Ad",      icon:"📢", type:"Ad" },
+  single_email:    { label:"Single Email",     icon:"✉️", type:"Email" },
+  email_campaign:  { label:"Email Campaign",   icon:"📬", type:"Email" },
+  blog:            { label:"Blog Post",        icon:"📝", type:"Long-Form" },
+  guide_pdf:       { label:"Guide PDF",        icon:"📘", type:"PDF" },
+  infographic_pdf: { label:"Infographic PDF",  icon:"📊", type:"PDF" },
+  images:          { label:"AI Images",        icon:"🎨", type:"Visual" },
+};
+
+let parsedSections = {};
+let activeFormat   = null;
+let genStartTime   = 0;
+
+// File upload
+const uploadZone = document.getElementById("upload-zone");
+let uploadedFiles = [];
+document.getElementById("doc-upload").addEventListener("change", e => handleFiles(e.target.files));
+uploadZone.addEventListener("dragover",  e => { e.preventDefault(); uploadZone.classList.add("drag-over"); });
+uploadZone.addEventListener("dragleave", () => uploadZone.classList.remove("drag-over"));
+uploadZone.addEventListener("drop", e => { e.preventDefault(); uploadZone.classList.remove("drag-over"); handleFiles(e.dataTransfer.files); });
+function handleFiles(files){ for(const f of files) if(!uploadedFiles.find(x=>x.name===f.name)) uploadedFiles.push(f); renderFileList(); }
+function renderFileList(){
+  const el = document.getElementById("file-list"); el.innerHTML = "";
+  uploadedFiles.forEach((f,i) => {
+    const d = document.createElement("div"); d.className = "file-preview visible";
+    d.innerHTML = `<span class="file-preview-name">📄 ${f.name}</span><button class="file-remove" onclick="removeFile(${i})">✕ Remove</button>`;
+    el.appendChild(d);
+  });
+}
+function removeFile(i){ uploadedFiles.splice(i,1); renderFileList(); }
+
+// Checkboxes
+const checkboxes = document.querySelectorAll('input[name="outputs"]');
+checkboxes.forEach(cb => cb.addEventListener("change", updateCount));
+function updateCount(){ document.getElementById("checked-count").textContent = document.querySelectorAll('input[name="outputs"]:checked').length; }
+function selectAll(){ checkboxes.forEach(cb => cb.checked=true); updateCount(); }
+function clearAll(){  checkboxes.forEach(cb => cb.checked=false); updateCount(); }
+function getSelectedOutputs(){ return [...document.querySelectorAll('input[name="outputs"]:checked')].map(cb=>cb.value); }
+
+// UI helpers
+function showEl(id){ document.getElementById(id).classList.add("active"); }
+function hideEl(id){ document.getElementById(id).classList.remove("active"); }
+function wordCount(str){ return str ? str.trim().split(/\s+/).filter(Boolean).length : 0; }
+
+// Loading steps
+const STEPS = ["step-research","step-strategy","step-copy","step-edit","step-format"];
+let stepTimer=null, currentStep=0;
+function startStepAnimation(){
+  currentStep=0; STEPS.forEach(s=>{ const el=document.getElementById(s); el.classList.remove("done","active-step"); }); advanceStep();
+}
+function advanceStep(){
+  if(currentStep>=STEPS.length) return;
+  document.getElementById(STEPS[currentStep]).classList.add("active-step");
+  stepTimer=setTimeout(()=>{
+    document.getElementById(STEPS[currentStep]).classList.remove("active-step");
+    document.getElementById(STEPS[currentStep]).classList.add("done");
+    currentStep++; advanceStep();
+  },9000);
+}
+function stopStepAnimation(){ clearTimeout(stepTimer); STEPS.forEach(s=>document.getElementById(s).classList.add("done")); }
+
+// Reset
+function resetPipeline(){
+  hideEl("results"); hideEl("loading-state"); hideEl("error-state");
+  document.getElementById("generate-btn").disabled=false;
+  document.getElementById("form-card").style.display="";
+  ["topic-input","key-message","business-name","audience-input"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("business-type").selectedIndex=0;
+  document.getElementById("tone-input").selectedIndex=0;
+  uploadedFiles=[]; renderFileList(); clearAll();
+}
+
+// Render helpers
+function escH(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function formatProse(text){
+  let html = escH(text);
+  html = html.replace(/^(#{1,3})\s+(.+)$/gm, (_,h,t) => {
+    const tag = h.length===1?"h2":h.length===2?"h2":"h3";
+    return `<${tag}>${t}</${tag}>`;
+  });
+  html = html.replace(/^([A-Z][A-Z\s\/\-]+):\s*$/gm, '<h2>$1</h2>');
+  html = html.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  html = html.replace(/(#\w+)/g,'<span class="hashtag">$1</span>');
+  const lines = html.split('\n');
+  let out = '';
+  for(const line of lines){
+    const t = line.trim();
+    if(!t){ out+='<br/>'; continue; }
+    if(t.startsWith('<h')){ out+=t; continue; }
+    out+=`<p>${t}</p>`;
+  }
+  return `<div class="prose-formatted">${out}</div>`;
+}
+
+function renderTwitter(text){
+  const parts = text.split(/Tweet\s+\d+:/i).filter(s=>s.trim());
+  if(parts.length<2) return `<div class="prose">${escH(text)}</div>`;
+  return `<div class="tweet-stack">${parts.map((t,i)=>{
+    const body = t.trim();
+    const chars = body.length;
+    return `<div class="tweet-card">
+      <div class="tweet-meta">
+        <span class="tweet-num">Tweet ${i+1}</span>
+        <span class="tweet-chars${chars>280?' over':''}">${chars}/280</span>
+      </div>
+      <div class="tweet-body">${escH(body)}</div>
+      <button class="tweet-copy" onclick="copyText(${JSON.stringify(body)}, this)">Copy tweet</button>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function renderEmailCampaign(text){
+  const blocks = [];
+  const emailRx = /EMAIL\s+(\d+)[^\n]*/gi;
+  let matches=[...text.matchAll(emailRx)];
+  if(matches.length===0) return formatProse(text);
+  for(let i=0;i<matches.length;i++){
+    const start = matches[i].index + matches[i][0].length;
+    const end   = matches[i+1] ? matches[i+1].index : text.length;
+    blocks.push({ num:matches[i][1], content:text.slice(start,end).trim() });
+  }
+  const tabs = blocks.map((b,i)=>`<button class="email-tab${i===0?' active':''}" onclick="switchEmailTab(${i})">${'Email '+b.num}</button>`).join('');
+  const panels = blocks.map((b,i)=>renderEmailFields(b.content, i===0)).join('');
+  return `<div class="email-tabs">${tabs}</div>${panels}`;
+}
+
+function renderEmailFields(text, active){
+  const lines = text.split('\n');
+  let html = `<div class="email-block${active?' active':''}">`;
+  const sections = [];
+  let cur = null;
+  for(const line of lines){
+    const m = line.match(/^(Subject(?:\s+Line)?(?:\s*[AB12])?|Preview\s*Text|Body|CTA|PS|Preheader):\s*(.*)/i);
+    if(m){ if(cur) sections.push(cur); cur={label:m[1],value:m[2]}; }
+    else if(cur){ cur.value+='\n'+line; }
+    else{ if(!cur) cur={label:'Content',value:line}; }
+  }
+  if(cur) sections.push(cur);
+  if(sections.length>1){
+    sections.forEach(s=>{ html+=`<div class="email-field"><div class="email-field-label">${escH(s.label)}</div><div class="email-field-value">${escH(s.value.trim())}</div></div>`; });
+  } else {
+    html+=`<div class="email-field"><div class="email-field-value">${escH(text)}</div></div>`;
+  }
+  return html+'</div>';
+}
+
+function renderAdFields(text){
+  const lines = text.split('\n');
+  const fields=[];
+  let cur=null;
+  for(const line of lines){
+    const m=line.match(/^[-–—]?\s*(Headlines?|Descriptions?|Sitelinks?|Intro\s*Text|Headline|Description|CTA|Message Ad|Subject)[:\s]*(.*)/i);
+    if(m){ if(cur) fields.push(cur); cur={label:m[1],value:m[2]}; }
+    else if(cur){ cur.value+='\n'+line; }
+  }
+  if(cur) fields.push(cur);
+  if(fields.length>1){
+    return `<div class="ad-grid">${fields.map(f=>`<div class="ad-field"><div class="ad-field-head"><span class="ad-field-label">${escH(f.label)}</span></div><div class="ad-field-body">${escH(f.value.trim())}</div></div>`).join('')}</div>`;
+  }
+  return formatProse(text);
+}
+
+function renderImages(items){
+  if(!Array.isArray(items)||!items.length) return `<div style="padding:2rem;text-align:center;font-family:var(--mono);font-size:0.8rem;color:var(--muted)">No images generated.<br/>Check your GOOGLE_API_KEY or OPENAI_API_KEY in .env</div>`;
+  return `<div class="img-gallery">${items.map(img=>`
+    <div class="img-card">
+      ${img.url ? `<img src="${escH(img.url)}" alt="${escH(img.label||'Generated image')}" loading="lazy" width="512" height="512"/>` : `<div class="img-placeholder"><div class="img-placeholder-icon">🎨</div><div class="img-placeholder-text">Generation failed</div></div>`}
+      <div class="img-card-info">
+        <div class="img-card-label">${escH(img.label||'Image')}</div>
+        <div class="img-card-prompt">${escH((img.prompt||'').slice(0,120))}${(img.prompt||'').length>120?'…':''}</div>
+        ${img.url?`<button class="btn-dl-img" onclick="downloadImage('${escH(img.url)}','${escH(img.label||'image')}')">↓ Download</button>`:''}
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function renderContent(fmt, content){
+  if(fmt==='images')          return renderImages(content);
+  if(fmt==='twitter')         return renderTwitter(content);
+  if(fmt==='email_campaign')  return renderEmailCampaign(content);
+  if(fmt==='single_email')    return renderEmailFields(content, true);
+  if(fmt==='google_ad'||fmt==='linkedin_ad') return renderAdFields(content);
+  if(['blog','guide_pdf','infographic_pdf','instagram','linkedin','facebook'].includes(fmt)) return formatProse(content);
+  return `<div class="prose">${escH(content)}</div>`;
+}
+
+function switchEmailTab(idx){
+  document.querySelectorAll('.email-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.querySelectorAll('.email-block').forEach((b,i)=>b.classList.toggle('active',i===idx));
+}
+
+function activateFormat(fmt){
+  activeFormat = fmt;
+  const meta    = OUTPUT_META[fmt]||{label:fmt,icon:'◈',type:''};
+  const content = parsedSections[fmt];
+  const isPDF   = fmt.includes('pdf');
+  const wc      = fmt!=='images' && typeof content==='string' ? wordCount(content) : null;
+
+  document.querySelectorAll('.r-format-item').forEach(el=>el.classList.toggle('active', el.dataset.fmt===fmt));
+
+  const panel = document.getElementById('r-panel');
+  panel.innerHTML = `
+    <div class="r-panel-head">
+      <div class="r-panel-title">
+        <span class="r-panel-icon">${meta.icon}</span>
+        <span class="r-panel-name">${meta.label}</span>
+        <span class="r-panel-type">${meta.type}</span>
+      </div>
+      <div class="r-panel-actions">
+        ${fmt!=='images'?`<button class="btn-action" id="copy-btn" onclick="copyFormat('${fmt}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>`:''}
+        ${isPDF||fmt==='blog'?`<button class="btn-action btn-action-primary" onclick="printCurrentPanel()">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Download PDF
+        </button>`:''}
+      </div>
+    </div>
+    ${wc?`<div class="r-wc-bar"><span class="r-wc-label">Word count</span><span class="r-wc-num">${wc.toLocaleString()} words</span></div>`:''}
+    <div class="r-panel-body" id="r-panel-body">
+      ${renderContent(fmt, content)}
+    </div>`;
+}
+
+function renderResults(data){
+  const inputs  = data.inputs || {};
+  parsedSections = data.sections || {};
+  const outputs = inputs.outputs || [];
+  const elapsed = Math.round((Date.now()-genStartTime)/1000);
+
+  let totalWords = 0;
+  outputs.forEach(f=>{ if(f!=='images'&&typeof parsedSections[f]==='string') totalWords+=wordCount(parsedSections[f]); });
+  document.getElementById('r-stats').innerHTML = `
+    <span class="r-stat"><span>${outputs.length}</span> formats</span>
+    <span class="r-stat-dot">·</span>
+    <span class="r-stat"><span>~${totalWords.toLocaleString()}</span> words</span>
+    <span class="r-stat-dot">·</span>
+    <span class="r-stat">generated in <span>${elapsed}s</span></span>`;
+
+  const chips = [
+    {k:'Business', v:inputs.business_name},
+    {k:'Type',     v:inputs.business_type},
+    {k:'Audience', v:inputs.audience},
+    {k:'Tone',     v:inputs.tone},
+  ].filter(c=>c.v);
+  document.getElementById('r-chips').innerHTML = chips.map(c=>
+    `<div class="r-chip"><span class="r-chip-key">${c.k}</span><span class="r-chip-sep">/</span><span class="r-chip-val">${escH(c.v)}</span></div>`
+  ).join('');
+
+  const list = document.getElementById('r-format-list');
+  list.innerHTML = outputs.map(fmt=>{
+    const meta = OUTPUT_META[fmt]||{label:fmt,icon:'◈'};
+    const wc   = fmt!=='images'&&typeof parsedSections[fmt]==='string' ? wordCount(parsedSections[fmt]) : null;
+    return `<div class="r-format-item" data-fmt="${fmt}" onclick="activateFormat('${fmt}')">
+      <span class="r-format-icon">${meta.icon}</span>
+      <div class="r-format-info">
+        <div class="r-format-name">${meta.label}</div>
+        ${wc?`<div class="r-format-words">${wc.toLocaleString()} words</div>`:''}
+      </div>
+      <div class="r-format-done"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></div>
+    </div>`;
+  }).join('');
+
+  if(outputs.length) activateFormat(outputs[0]);
+}
+
+function copyFormat(fmt){
+  const text = typeof parsedSections[fmt]==='string' ? parsedSections[fmt] : JSON.stringify(parsedSections[fmt],null,2);
+  copyText(text, document.getElementById('copy-btn'));
+}
+
+function copyText(text, btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    if(!btn) return;
+    const orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = '✓ Copied!';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML=orig; },2000);
+  });
+}
+
+function printCurrentPanel(){
+  window.print();
+}
+
+function downloadImage(url, label){
+  const a=document.createElement('a');
+  a.href=url; a.download=(label||'image').replace(/\s+/g,'-')+'.jpg';
+  a.target='_blank'; a.click();
+}
+
+async function runPipeline(){
+  const topic         = document.getElementById("topic-input").value.trim();
+  const businessName  = document.getElementById("business-name").value.trim();
+  const businessType  = document.getElementById("business-type").value;
+  const audience      = document.getElementById("audience-input").value.trim();
+  const tone          = document.getElementById("tone-input").value;
+  const keyMessage    = document.getElementById("key-message").value.trim();
+  const outputs       = getSelectedOutputs();
+
+  if(!businessName){ document.getElementById("business-name").focus(); return; }
+  if(!businessType){ document.getElementById("business-type").focus(); return; }
+  if(!topic){        document.getElementById("topic-input").focus();   return; }
+  if(!audience){     document.getElementById("audience-input").focus();return; }
+  if(!tone){         document.getElementById("tone-input").focus();    return; }
+  if(!outputs.length){ alert("Please select at least one output format."); return; }
+
+  hideEl("error-state"); hideEl("results");
+  showEl("loading-state");
+  document.getElementById("form-card").style.display="none";
+  document.getElementById("generate-btn").disabled=true;
+  genStartTime = Date.now();
+  startStepAnimation();
+
+  try{
+    const fd = new FormData();
+    fd.append("topic",         topic);
+    fd.append("business_name", businessName);
+    fd.append("business_type", businessType);
+    fd.append("audience",      audience);
+    fd.append("tone",          tone);
+    fd.append("key_message",   keyMessage);
+    fd.append("outputs",       JSON.stringify(outputs));
+    uploadedFiles.forEach(f=>fd.append("documents",f,f.name));
+
+    const res  = await fetch(API_URL, {method:"POST", body:fd});
+    const data = await res.json();
+    stopStepAnimation(); hideEl("loading-state");
+
+    if(!res.ok||!data.success){
+      document.getElementById("error-msg").textContent    = data.error  || "Pipeline failed.";
+      document.getElementById("error-detail").textContent = data.detail || "";
+      showEl("error-state");
+      document.getElementById("form-card").style.display="";
+      document.getElementById("generate-btn").disabled=false;
+      return;
+    }
+
+    renderResults(data);
+    showEl("results");
+    document.getElementById("generate-btn").disabled=false;
+  } catch(err){
+    stopStepAnimation(); hideEl("loading-state");
+    document.getElementById("error-msg").textContent    = "Could not reach the pipeline server.";
+    document.getElementById("error-detail").textContent = err.message;
+    showEl("error-state");
+    document.getElementById("form-card").style.display="";
+    document.getElementById("generate-btn").disabled=false;
+  }
+}
+</script>
+</body>
+</html>
