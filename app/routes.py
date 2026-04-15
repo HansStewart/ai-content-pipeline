@@ -1,18 +1,12 @@
-from flask import Blueprint, request, jsonify
+import os
+from flask import Blueprint, request, jsonify, send_from_directory
 from app.content_pipeline import run_content_pipeline
 
 main = Blueprint("main", __name__)
 
 @main.route("/", methods=["GET"])
-def health():
-    return jsonify({
-        "status": "healthy",
-        "service": "AI Content Pipeline Agent",
-        "powered_by": "CrewAI + GPT-4o",
-        "endpoints": {
-            "POST /generate": "Generate email, LinkedIn post, blog outline, and ad copy"
-        }
-    })
+def index():
+    return send_from_directory(os.path.join(os.path.dirname(__file__), ".."), "index.html")
 
 @main.route("/generate", methods=["POST"])
 def generate_content():
