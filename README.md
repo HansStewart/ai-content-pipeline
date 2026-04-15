@@ -1,158 +1,152 @@
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# AI Content Pipeline
 
-  AI CONTENT PIPELINE
-  Sequential multi-agent workflow — one brief, complete campaign assets.
-  by Hans Stewart · hansstewart.dev
+> A sequential multi-agent content workflow that turns a brief into a complete set of campaign assets across multiple channels.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+**by Hans Stewart &nbsp;·&nbsp; [hansstewart.dev](https://hansstewart.dev)**
 
-  Architecture    →   hansstewart.github.io/ai-architecture
-  Portfolio       →   hansstewart.dev
-  GitHub          →   github.com/HansStewart/ai-content-pipeline
+[Architecture](https://hansstewart.github.io/ai-architecture) &nbsp;·&nbsp; [Portfolio](https://hansstewart.dev) &nbsp;·&nbsp; [GitHub](https://github.com/HansStewart/ai-content-pipeline)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WHAT IT DOES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+---
 
-  A sequential multi-agent content workflow that turns a brief into a
-  complete set of campaign assets across multiple channels in a single
-  pipeline run.
+## What It Does
 
-  Provide a topic, target audience, and tone. The pipeline runs a
-  CrewAI-orchestrated chain — Researcher, Copywriter/Editor, Formatter —
-  where each agent inherits the full output of the last. The result is
-  a unified, multi-channel content package with a consistent strategic
-  voice across email, social, blog, and paid copy.
+Provide a topic, target audience, and tone. The pipeline runs a CrewAI-orchestrated chain — Researcher, Copywriter/Editor, Formatter — where each agent inherits the full output of the last. The result is a unified, multi-channel content package with a consistent strategic voice across email, social, blog, and paid copy.
 
-  Use case: rapid campaign production with one structured prompt.
+**Use case:** rapid campaign production with one structured prompt.
 
+---
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-BACKEND WORKFLOW — 4 STEPS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## Backend Workflow
 
-  Step 01 — Brief intake
-    Receives a topic, target audience, and tone profile.
-    Validates required fields and standardizes the brief structure.
-    Initializes the CrewAI run context used by each downstream agent.
-    → Input: Topic · audience · tone
+**Step 1 — Brief intake** `Input: Topic · audience · tone`
+Receives a topic, target audience, and tone profile. Validates required fields and standardizes the brief structure. Initializes the CrewAI run context used by each downstream agent.
 
-  Step 02 — Researcher agent
-    Identifies pain points, messaging angles, and audience motivations.
-    Creates a structured insight layer that all downstream agents inherit.
-    Feeds a clean strategy context into copy generation.
-    → Intermediate: Angle map + research context
+**Step 2 — Researcher agent** `Intermediate: Angle map + research context`
+Identifies pain points, messaging angles, and audience motivations. Creates a structured insight layer that all downstream agents inherit. Feeds a clean strategy context into copy generation.
 
-  Step 03 — Copywriter and editor
-    Creates email copy, LinkedIn content, blog outline, and ad variations.
-    Runs editorial refinement for clarity, persuasion, and tone alignment.
-    Preserves channel-specific formatting while maintaining one strategic
-    voice.
-    → Processing: Generation + editorial QA
+**Step 3 — Copywriter and editor** `Processing: Generation + editorial QA`
+Creates email copy, LinkedIn content, blog outline, and ad variations. Runs editorial refinement for clarity, persuasion, and tone alignment. Preserves channel-specific formatting while maintaining one strategic voice.
 
-  Step 04 — Formatter agent
-    Collects every agent output into one labeled content package.
-    Organizes the response into a predictable, publication-ready structure.
-    Returns a final bundle through the API for direct operational use.
-    → Output: Multi-channel content package
+**Step 4 — Formatter agent** `Output: Multi-channel content package`
+Collects every agent output into one labeled content package. Organizes the response into a predictable, publication-ready structure. Returns a final bundle through the API for direct operational use.
 
+---
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONTENT CHANNELS PRODUCED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## Content Channels Produced
 
-  Email copy         Campaign email body, subject line, and CTA
-  LinkedIn content   Platform-native post with narrative structure
-  Blog outline       SEO-structured post with section breakdown
-  Ad variations      Copy variants for paid channel use
+| Channel | Output |
+|---|---|
+| Email | Campaign email body, subject line, and CTA |
+| LinkedIn | Platform-native post with narrative structure |
+| Blog | SEO-structured outline with section breakdown |
+| Paid | Copy variants for ad use |
 
+---
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ORCHESTRATION MODEL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## Orchestration Model
 
-  Orchestration    Sequential CrewAI handoff with shared context
-                   persistence across all agent roles.
-  Consistency      Unified message strategy across all output channels —
-                   each agent builds on the last, not from scratch.
-  Design pattern   Sequential specialist agents outperform a single
-                   undifferentiated one-shot generation step.
+- **Orchestration** — Sequential CrewAI handoff with shared context persistence across all agent roles.
+- **Consistency** — Unified message strategy across all output channels — each agent builds on the last, not from scratch.
+- **Design pattern** — Sequential specialist agents outperform a single undifferentiated one-shot generation step.
 
+---
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-API REFERENCE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## API Reference
 
-  POST /generate
-  Content-Type: application/json
+**POST** `/generate`
 
-  Request
-  ───────
-  {
-    "topic": "...",
-    "audience": "...",
-    "tone": "..."
+```json
+// Request
+{
+  "topic": "...",
+  "audience": "...",
+  "tone": "..."
+}
+
+// Response
+{
+  "success": true,
+  "content": {
+    "email": "...",
+    "linkedin": "...",
+    "blog_outline": "...",
+    "ad_variations": ["...", "..."]
   }
+}
+```
 
-  Response
-  ────────
-  {
-    "success": true,
-    "content": {
-      "email": "...",
-      "linkedin": "...",
-      "blog_outline": "...",
-      "ad_variations": [ "...", "..." ]
-    }
-  }
+---
 
+## Tech Stack
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-TECH STACK
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+| Layer | Technology |
+|---|---|
+| Language | Python 3.11 |
+| Framework | Flask |
+| Server | Gunicorn |
+| Orchestration | CrewAI (sequential multi-agent pipeline) |
+| AI Model | OpenAI GPT-4o |
+| Deployment | Google Cloud Run — us-east1 |
+| Frontend | Vanilla HTML / CSS / JavaScript |
 
-  Language        Python 3.11
-  Framework       Flask
-  Server          Gunicorn
-  Orchestration   CrewAI (sequential multi-agent pipeline)
-  AI Model        OpenAI GPT-4o
-  Deployment      Google Cloud Run — us-east1
-  Frontend        Vanilla HTML / CSS / JavaScript
+---
 
+## Local Development
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-LOCAL DEVELOPMENT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```bash
+git clone https://github.com/HansStewart/ai-content-pipeline.git
+cd ai-content-pipeline
+pip install -r requirements.txt
+cp .env.example .env
+# Add OPENAI_API_KEY to .env
+python main.py
+# Open http://localhost:8080
+```
 
-  git clone https://github.com/HansStewart/ai-content-pipeline.git
-  cd ai-content-pipeline
-  pip install -r requirements.txt
-  cp .env.example .env
-  → Add OPENAI_API_KEY to .env
-  python main.py
-  → Open http://localhost:8080
+---
 
+## Project Structure
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PROJECT STRUCTURE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+ai-content-pipeline/
+├── main.py
+├── app/
+│   ├── __init__.py
+│   ├── routes.py
+│   └── agents/
+│       ├── researcher.py
+│       ├── copywriter.py
+│       ├── editor.py
+│       └── formatter.py
+├── index.html
+├── requirements.txt
+├── Procfile
+└── .env.example          OPENAI_API_KEY=
+```
 
-  ai-content-pipeline/
-  ├── main.py
-  ├── app/
-  │   ├── __init__.py
-  │   ├── routes.py
-  │   └── agents/
-  │       ├── researcher.py
-  │       ├── copywriter.py
-  │       ├── editor.py
-  │       └── formatter.py
-  ├── index.html
-  ├── requirements.txt
-  ├── Procfile
-  └── .env.example               OPENAI_API_KEY=
+---
 
+## Environment Variables
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Hans Stewart · Marketing Automation Engineer · hansstewart.dev
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+| Variable | Required | Purpose |
+|---|---|---|
+| `OPENAI_API_KEY` | Yes | All agent stages and content generation |
+
+---
+
+## Full Agent Ecosystem
+
+| Agent | Repository |
+|---|---|
+| Website Audit Agent | [github.com/HansStewart/website-audit-agent](https://github.com/HansStewart/website-audit-agent) |
+| Voice-to-CRM Agent | [github.com/HansStewart/voice-to-crm](https://github.com/HansStewart/voice-to-crm) |
+| Pipeline Intelligence Agent | [github.com/HansStewart/pipeline-intelligence-agent](https://github.com/HansStewart/pipeline-intelligence-agent) |
+| CRM Automation Agent | [github.com/HansStewart/crm-agent](https://github.com/HansStewart/crm-agent) |
+| Multi-Agent BI System | [github.com/HansStewart/multi-agent](https://github.com/HansStewart/multi-agent) |
+| AI Data Agent | [github.com/HansStewart/ai-data-agent](https://github.com/HansStewart/ai-data-agent) |
+| RAG Document Intelligence | [github.com/HansStewart/rag-agent](https://github.com/HansStewart/rag-agent) |
+| AI Architecture | [hansstewart.github.io/ai-architecture](https://hansstewart.github.io/ai-architecture) |
+
+---
+
+**Hans Stewart &nbsp;·&nbsp; Marketing Automation Engineer &nbsp;·&nbsp; [hansstewart.dev](https://hansstewart.dev)**
